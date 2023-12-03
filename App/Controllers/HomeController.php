@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Core\AControllerBase;
 use App\Core\Responses\Response;
+use App\Models\Post;
 
 /**
  * Class HomeController
@@ -28,15 +29,15 @@ class HomeController extends AControllerBase
      */
     public function index(): Response
     {
-        return $this->html();
+        return $this->html(['topFive' => Post::getTopFive(), 'posts' => Post::getAll(orderBy: "date desc", limit: 5)]);
     }
 
     /**
      * Example of an action accessible without authorization
      * @return \App\Core\Responses\ViewResponse
      */
-    public function contact(): Response
+    public function posts(): Response
     {
-        return $this->html();
+        return $this->html(['posts' => Post::getAll(orderBy: "date desc")]);
     }
 }

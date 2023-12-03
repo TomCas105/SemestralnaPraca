@@ -1,0 +1,12 @@
+insert ignore into vaiicko_db.posts (id, author, title, date, info, ingredients, recipe, picture)
+values (1, 'Rudolf', 'Bryndzové halušky so slaninou', '2023-06-16 12:45:12',
+        'Jednoduché, lacné, sýte a hlavne veľmi chutné jedlo.', null,
+        'Nastrúhame si 4 ks očistených zemiakov, pridáme čajovú lyžičku soli. Pridávame múku, až kým v ceste nezostane stáť varecha. Nakrájame si údenú slaninku a na miernom ohni pomaličky pražíme do červena. Bryndzu rozmiešame s kyslou smotanou. Cesto pretláčame pomocou sitka na halušky do vriacej osolenej vody. Keď vyplávajú navrch, sú hotové. Halušky scedíme, po vybratí neoplachujeme. Na horúce halušky hneď dáme bryndzu a slaninku. Dobrú chuť.',
+        'App/Resources/images/previews/recipe_01_preview.jpg'),
+       (2, 'Janko Hráško', 'Hrachová kaša s údeným mäsom', '2023-09-28 16:12:40', null, null,
+        'Suchý polený lúpaný hrach poriadne prepláchneme vodou a necháme ho pár hodín namočiť vo vode. Najlepšie cez noc, je potom rýchlejšie uvarený. Potom hrach v čistej vode (asi jeden liter) privedieme pomaly k varu a uvaríme do mäkka spolu s bobkovým listom. Počas varu sa tvorí pena, ktorú môžeme pre lepšiu chuť kaše odobrať. Až teraz osolíme, vyberieme bobkový list a uvarený hrach rozmixujeme ponorným mixérom. Vo väčšom hrnci na masti usmažíme múku a pripravíme zásmažku, do ktorej po odstavení z plameňa pridáme so soľou rozotretý cenak. Zalejeme trochou vody, alebo vývaru, premiešame a poriadne prevaríme. Potom do hrnca pridáme rozmixovaný hrach. Podľa potreby dosolíme, ochutíme korením a majoránkou. Spolu ešte krátko prevaríme. Hotovú hrachovú kašu po odstavení zjemníme maslom. Podávame s opečenou cibuľou a údeným, alebo vajíčkom.',
+        'App/Resources/images/previews/recipe_06_preview.jpg'),
+       (3, 'Mr. Panda', 'Vyprážané kuracie kúsky v trojobale', '2023-12-1 10:23:12', null, null,
+        'Kuracie prsia umyjeme, nakrájame na slížiky, nemusíme soliť lebo cesto bude dosť slané. Cestíčko spravíme tak, že do misky nasypeme hladkú muku, 2 vajcia, mlieko, vegetu, trošku kypriaceho prášku do pečiva, aby bolo cestičko nadýchané. Ďalej do cestíčka namáčame kúsky mäsa. Poriadne rozmiešame kuracie mäso a na panvici na rozpálenom oleji vyprážame do zlatista. Priloha: opekané zemiaky, ryža, hranolky a zeleninová obloha. Prajem dobrú chuť.',
+        'App/Resources/images/previews/recipe_02_preview.jpg')
+;

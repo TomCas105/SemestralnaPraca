@@ -43,8 +43,8 @@
                     <a href="<?= $link->url("home.posts") ?>" class="nav-link px-2 link-body-emphasis">Recepty</a>
                 </li>
                 <li>
-                    <a href="<?= $link->url("home.weeks_choice") ?>" class="nav-link px-2 link-body-emphasis">Výber
-                        týždňa</a>
+                    <a href="<?= $link->url("home.months_choice") ?>" class="nav-link px-2 link-body-emphasis">Výber
+                        mesiaca</a>
                 </li>
             </ul>
 

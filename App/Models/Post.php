@@ -12,7 +12,7 @@ class Post extends Model
 
     public static function getTopFive(): array
     {
-        $posts = Post::getAll(whereClause: "DATEDIFF(NOW(), date) < 30");
+        $posts = Post::getAll(whereClause: "DATEDIFF(NOW(), date) < 31");
 
         if (empty($posts)) {
             $posts = Post::getAll();

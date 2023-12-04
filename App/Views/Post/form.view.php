@@ -1,3 +1,11 @@
+<?php
+
+/** @var Array $data */
+/** @var \App\Models\Post $post */
+/** @var \App\Core\LinkGenerator $link */
+?>
+
+
 <?php if (!is_null(@$data['errors'])): ?>
     <?php foreach ($data['errors'] as $error): ?>
         <div class="alert alert-danger" role="alert">
@@ -16,12 +24,13 @@
             <label for="inputGroupFile02" class="form-label">Náhľadový obrázok</label>
             <img class="recipe-preview mb-2" id="img-preview" src="<?= @$data['post']?->getPicture() ?>" alt="..."/>
             <div class="input-group mb-3 has-validation">
-                <input type="file" class="form-control " name="picture" id="inputGroupFile02" onchange="loadFile(event)">
+                <input type="file" class="form-control " name="picture" id="inputGroupFile02"
+                       onchange="loadFile(event)">
             </div>
             <script>
-                var loadFile = function(event) {
+                var loadFile = function (event) {
                     var reader = new FileReader();
-                    reader.onload = function(){
+                    reader.onload = function () {
                         var output = document.getElementById('img-preview');
                         output.src = reader.result;
                     };

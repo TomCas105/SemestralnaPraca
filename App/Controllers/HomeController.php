@@ -40,4 +40,13 @@ class HomeController extends AControllerBase
     {
         return $this->html(['posts' => Post::getAll(orderBy: "date desc")]);
     }
+
+    /**
+     * Example of an action accessible without authorization
+     * @return \App\Core\Responses\ViewResponse
+     */
+    public function months_choice(): Response
+    {
+        return $this->html(['posts' => Post::getTopFive()]);
+    }
 }

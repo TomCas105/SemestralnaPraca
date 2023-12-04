@@ -45,7 +45,7 @@ class PostController extends AControllerBase
             case 'save':
                 // get id of post to check
                 $id = (int)$this->request()->getValue("id");
-                if ($id > 0 ) {
+                if ($id > 0) {
                     // only author can save the edited post
                     $postToCheck = Post::getOne($id);
                     return $postToCheck->getAuthor() == $this->app->getAuth()->getLoggedUserName();
@@ -101,7 +101,7 @@ class PostController extends AControllerBase
 
         $formErrors = $this->formErrors();
         if (count($formErrors) > 0) {
-            if($id > 0) {
+            if ($id > 0) {
                 return $this->html(
                     [
                         'post' => $post,
@@ -159,8 +159,8 @@ class PostController extends AControllerBase
         if ($this->request()->getFiles()['picture']['name'] != "" && !in_array($this->request()->getFiles()['picture']['type'], ['image/jpeg', 'image/png'])) {
             $errors[] = "Obrázok musí byť typu JPG alebo PNG!";
         }
-        if ($this->request()->getValue('info') != "" && strlen($this->request()->getValue('info') > 200)) {
-            $errors[] = "Pole Krátky popis jedla nesmie obsahovať viac ako 200 znakov!";
+        if ($this->request()->getValue('info') != "" && strlen($this->request()->getValue('info')) > 200) {
+            $errors[] = "Pole Krátky popis jedla nesmie obsahovať viac ako 200 znakov!" . strlen($this->request()->getValue('info'));
         }
         return $errors;
     }

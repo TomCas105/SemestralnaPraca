@@ -11,13 +11,13 @@
         <div class="album py-3">
             <div class="container">
                 <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 g-3">
-                    <?php foreach ($data['posts'] as $post): ?>
 
+                    <?php foreach ($data['posts'] as $post): ?>
                         <div class="col ">
                             <a href="<?= $link->url('post.index', ['id' => $post->getId()]) ?>" class="card recipe-card">
-                                <div class="card-body h-100">
+                                <div class="card-body">
                                     <img src="<?= $post->getPicture() ?>" alt="..." class="recipe-card-preview">
-                                    <div class="d-flex h-100 gap-2 py-3">
+                                    <div class="d-flex gap-2 py-3">
                                         <img src="App/Resources/images/icons/user_icon_01.png" alt="..."
                                              class="rounded-circle user-icon">
                                         <div class="d-flex me-auto gap-2 justify-content-between">
@@ -37,8 +37,8 @@
                                 </div>
                             </a>
                         </div>
-
                     <?php endforeach; ?>
+
                 </div>
             </div>
         </div>

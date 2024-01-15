@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
-use App\Core\DB\Connection;
 use App\Core\Model;
-use Cassandra\Date;
 use DateTime;
+use Exception;
 
 class Post extends Model
 {
 
+    /**
+     * @throws Exception
+     */
     public static function getTopFivePosts(): array
     {
         $posts = Post::getAll();
@@ -27,6 +29,9 @@ class Post extends Model
         return array_slice($posts, 0, 5);
     }
 
+    /**
+     * @throws Exception
+     */
     public static function getRecommendedPosts(): array
     {
         $posts = Post::getAll(whereClause: "recommended = TRUE");
@@ -162,11 +167,14 @@ class Post extends Model
         }
         return (int)($postAge->days / 365) . "r";
         }
-        catch (\Exception) {
+        catch (Exception) {
             return  "";
         }
     }
 
+    /**
+     * @throws Exception
+     */
     public function getPostRating(): ?float
     {
         $rating = 0.0;

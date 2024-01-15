@@ -30,27 +30,23 @@ class PostController extends AControllerBase
         return $this->html(['post' => $post]);
     }
 
+    /**
+     * @throws \Exception
+     */
     public function authorize($action): bool
     {
         switch ($action) {
+            case 'delete':
             case 'edit' :
-            case 'delete' :
-                // get id of post to check
                 $id = (int)$this->request()->getValue("id");
-                // get post from db
                 $postToCheck = Post::getOne($id);
-                // check if the logged login is the same as the post author
-                // if yes, he can edit and delete post
                 return $postToCheck->getAuthor() == $this->app->getAuth()->getLoggedUserName();
             case 'save':
-                // get id of post to check
                 $id = (int)$this->request()->getValue("id");
                 if ($id > 0) {
-                    // only author can save the edited post
                     $postToCheck = Post::getOne($id);
                     return $postToCheck->getAuthor() == $this->app->getAuth()->getLoggedUserName();
                 } else {
-                    // anyone can add a new post
                     return $this->app->getAuth()->isLogged();
                 }
             default:
@@ -72,16 +68,21 @@ class PostController extends AControllerBase
             throw new HTTPException(404);
         }
 
-        return $this->html(
-            [
-                'post' => $post
-            ]
-        );
+        if (!$this->authorize("edit")) {
+            return new RedirectResponse($this->url("home.posts"));
+        }
+
+        return $this->html(['post' => $post]);
     }
 
     public function save()
     {
         $id = (int)$this->request()->getValue('id');
+
+        if (!$this->authorize("save")) {
+            return new RedirectResponse($this->url("home.posts"));
+        }
+
         $oldFileName = "";
 
         if ($id > 0) {
@@ -133,6 +134,11 @@ class PostController extends AControllerBase
     public function delete()
     {
         $id = (int)$this->request()->getValue('id');
+
+        if (!$this->authorize("delete")) {
+            return new RedirectResponse($this->url("home.posts"));
+        }
+
         $post = Post::getOne($id);
         $reviews = Review::getAll(whereClause: "post_id = '" . $post->getId() . "'");
 

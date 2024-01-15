@@ -11,9 +11,9 @@
     <div id="mainPageContainer" class="col-lg-7 border">
         <span>
             <img class="recipe-preview shadow-small" src="<?= $data['post']->getPicture(); ?>" alt="">
-            <p class="text-bold text-20 mt-3"><?= $data['post']->getTitle() ?></p>
+            <p class="text-bold text-20 mt-3 mb-1"><?= $data['post']->getTitle() ?></p>
 
-             <div class="rating-bar mt-0">
+             <div class="rating-bar mb-3">
                  <span class="rating-bar-star-bg">
                      <span class="rating-bar-star" style="width: <?= $data['post']->getPostRating() * 20 ?>%"></span>
                  </span>

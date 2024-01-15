@@ -9,15 +9,15 @@ use App\Core\Responses\Response;
 use App\Helpers\FileStorage;
 use App\Models\Post;
 use App\Models\Review;
-use App\Core\DB\Connection;
-use App\Core\Model;
-use http\Exception;
-use PDO;
+use Exception;
 
 class PostController extends AControllerBase
 {
 
-
+    /**
+     * @throws HTTPException
+     * @throws Exception
+     */
     public function index(): Response
     {
         $id = (int)$this->request()->getValue('id');
@@ -31,7 +31,7 @@ class PostController extends AControllerBase
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function authorize($action): bool
     {
@@ -59,6 +59,10 @@ class PostController extends AControllerBase
         return $this->html();
     }
 
+    /**
+     * @throws HTTPException
+     * @throws Exception
+     */
     public function edit(): Response
     {
         $id = (int)$this->request()->getValue('id');
@@ -75,7 +79,11 @@ class PostController extends AControllerBase
         return $this->html(['post' => $post]);
     }
 
-    public function save()
+    /**
+     * @throws HTTPException
+     * @throws Exception
+     */
+    public function save(): Response
     {
         $id = (int)$this->request()->getValue('id');
 
@@ -83,7 +91,7 @@ class PostController extends AControllerBase
             return new RedirectResponse($this->url("home.posts"));
         }
 
-        $oldFileName = "";
+        $oldFileName = null;
 
         if ($id > 0) {
             $post = Post::getOne($id);
@@ -95,7 +103,7 @@ class PostController extends AControllerBase
             $post->setDate(date("Y-m-d h:i:s"));
         }
         $post->setTitle($this->request()->getValue('title'));
-        $post->setPicture($this->request()->getFiles()['picture']['name']);
+        $post->setPicture($oldFileName);
         $post->setInfo($this->request()->getValue('info'));
         $post->setIngredients($this->request()->getValue('ingredients'));
         $post->setRecipe($this->request()->getValue('recipe'));
@@ -117,21 +125,25 @@ class PostController extends AControllerBase
                 ], 'add'
             );
         } else {
-            $newFileName = $this->request()->getFiles()['picture'];
-            //ulozenie nového suboru ak starý je prázdny alebo ak sa nerovná so starému
-            if (!is_null($newFileName) && $newFileName != "" && (is_null($oldFileName) || ($oldFileName != $newFileName))) {
-                if (!is_null($oldFileName)) {
+            $newFile = $this->request()->getFiles()['picture'];
+            $newFileName = $this->request()->getFiles()['picture']['name'];
+            if ($newFileName != "") {
+                if (FileStorage::UPLOAD_DIR . "/" . $newFileName != $oldFileName)  {
                     FileStorage::deleteFile($oldFileName);
+                    $saveFileName = FileStorage::saveFile($newFile);
+                    $post->setPicture(FileStorage::UPLOAD_DIR . "/" . $saveFileName);
                 }
-                $saveFileName = FileStorage::saveFile($newFileName);
-                $post->setPicture(FileStorage::UPLOAD_DIR . "/" . $saveFileName);
             }
             $post->save();
             return new RedirectResponse($this->url("user.posts"));
         }
     }
 
-    public function delete()
+    /**
+     * @throws HTTPException
+     * @throws Exception
+     */
+    public function delete() : Response
     {
         $id = (int)$this->request()->getValue('id');
 
@@ -142,7 +154,7 @@ class PostController extends AControllerBase
         $post = Post::getOne($id);
         $reviews = Review::getAll(whereClause: "post_id = '" . $post->getId() . "'");
 
-        if (is_null($post)) {
+        if (!isset($post)) {
             throw new HTTPException(404);
         } else {
             FileStorage::deleteFile($post->getPicture());
@@ -154,12 +166,15 @@ class PostController extends AControllerBase
         }
     }
 
+    /**
+     * @throws Exception
+     */
     private function formErrors(): array
     {
         $id = (int)$this->request()->getValue('id');
         $post = Post::getOne($id);
         $errors = [];
-        if ($this->request()->getFiles()['picture']['name'] == "" && is_null($post->getPicture())) {
+        if ($this->request()->getFiles()['picture']['name'] == "" && $post->getPicture() == "") {
             $errors[] = "Obrázok nesmie byť prázdny!";
         }
         if ($this->request()->getValue('title') == "") {

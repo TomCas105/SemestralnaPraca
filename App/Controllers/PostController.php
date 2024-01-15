@@ -116,11 +116,15 @@ class PostController extends AControllerBase
                 ], 'add'
             );
         } else {
-            if ($oldFileName != "") {
-                FileStorage::deleteFile($oldFileName);
+            $newFileName = $this->request()->getFiles()['picture'];
+            //ulozenie nového suboru ak starý je prázdny alebo ak sa nerovná so starému
+            if (!is_null($newFileName) && $newFileName != "" && (is_null($oldFileName) || ($oldFileName != $newFileName))) {
+                if (!is_null($oldFileName)) {
+                    FileStorage::deleteFile($oldFileName);
+                }
+                $saveFileName = FileStorage::saveFile($newFileName);
+                $post->setPicture(FileStorage::UPLOAD_DIR . "/" . $saveFileName);
             }
-            $newFileName = FileStorage::saveFile($this->request()->getFiles()['picture']);
-            $post->setPicture(FileStorage::UPLOAD_DIR . "/" . $newFileName);
             $post->save();
             return new RedirectResponse($this->url("user.posts"));
         }
@@ -146,21 +150,23 @@ class PostController extends AControllerBase
 
     private function formErrors(): array
     {
+        $id = (int)$this->request()->getValue('id');
+        $post = Post::getOne($id);
         $errors = [];
-        if ($this->request()->getFiles()['picture']['name'] == "") {
-            $errors[] = "Pole Súbor obrázka musí byť vyplnené!";
+        if ($this->request()->getFiles()['picture']['name'] == "" && is_null($post->getPicture())) {
+            $errors[] = "Obrázok nesmie byť prázdny!";
         }
         if ($this->request()->getValue('title') == "") {
-            $errors[] = "Pole Názov príspevku musí byť vyplnené!";
+            $errors[] = "Názov príspevku nesmie byť prázdny!";
         }
         if ($this->request()->getValue('recipe') == "") {
-            $errors[] = "Pole Postup musí byť vyplnené!";
+            $errors[] = "Pole príprava musí byť vyplnené!";
         }
         if ($this->request()->getFiles()['picture']['name'] != "" && !in_array($this->request()->getFiles()['picture']['type'], ['image/jpeg', 'image/png'])) {
             $errors[] = "Obrázok musí byť typu JPG alebo PNG!";
         }
         if ($this->request()->getValue('info') != "" && strlen($this->request()->getValue('info')) > 200) {
-            $errors[] = "Pole Krátky popis jedla nesmie obsahovať viac ako 200 znakov!" . strlen($this->request()->getValue('info'));
+            $errors[] = "Krátky popis jedla nesmie obsahovať viac ako 200 znakov!" . strlen($this->request()->getValue('info'));
         }
         return $errors;
     }

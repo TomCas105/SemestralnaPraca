@@ -25,8 +25,8 @@
                                         <h6 class="mb-0"><?= $post->getAuthor() ?></h6>
                                         <p class="mb-1 opacity-75"><?= $post->getTitle() ?></p>
                                         <div class="rating-bar">
-                                        <span class="rating-bg">
-                                            <span class="rating-star"
+                                        <span class="rating-bar-star-bg">
+                                            <span class="rating-bar-star"
                                                   style="width: <?= $post->getPostRating() * 20 ?>%"></span>
                                         </span>
                                         </div>
@@ -61,8 +61,8 @@
                                 <h6 class="mb-0"><?= $post->getAuthor() ?></h6>
                                 <p class="mb-1 opacity-75"><?= $post->getTitle() ?></p>
                                 <div class="rating-bar">
-                                        <span class="rating-bg">
-                                            <span class="rating-star"
+                                        <span class="rating-bar-star-bg">
+                                            <span class="rating-bar-star"
                                                   style="width: <?= $post->getPostRating() * 20 ?>%"></span>
                                         </span>
                                 </div>

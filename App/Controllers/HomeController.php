@@ -29,7 +29,7 @@ class HomeController extends AControllerBase
      */
     public function index(): Response
     {
-        return $this->html(['topFive' => Post::getTopFive(), 'posts' => Post::getAll(orderBy: "date desc", limit: 5)]);
+        return $this->html(['topFive' => Post::getTopFivePosts(), 'posts' => Post::getAll(orderBy: "date desc", limit: 5)]);
     }
 
     /**
@@ -47,6 +47,6 @@ class HomeController extends AControllerBase
      */
     public function months_choice(): Response
     {
-        return $this->html(['posts' => Post::getTopFive()]);
+        return $this->html(['posts' => Post::getRecommendedPosts()]);
     }
 }

@@ -31,7 +31,7 @@
     <div id="navbarContainer" class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
             <a href="<?= $link->url("home.index") ?>"
-               class="d-flex align-items-center mb-2 me-0 me-lg-2 mb-lg-0 link-body-emphasis text-decoration-none">
+               class="d-flex align-items-center mb-2 me-0 ms-0 ms-lg-2 me-lg-2 mb-lg-0 link-body-emphasis text-decoration-none">
                 <img src="App/Resources/images/icons/web_icon.png" class="rounded-circle web-icon"
                      title="Návrat na hlavnú stránku"
                      alt="<?= \App\Config\Configuration::APP_NAME ?>">
@@ -40,10 +40,10 @@
 
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 mb-lg-0 justify-content-center">
                 <li>
-                    <a href="<?= $link->url("home.posts") ?>" class="nav-link px-2 link-body-emphasis">Recepty</a>
+                    <a href="<?= $link->url("home.posts") ?>" class="nav-link px-3 link-body-emphasis">Recepty</a>
                 </li>
                 <li>
-                    <a href="<?= $link->url("home.months_choice") ?>" class="nav-link px-2 link-body-emphasis">Výber
+                    <a href="<?= $link->url("home.months_choice") ?>" class="nav-link px-3 link-body-emphasis">Výber
                         mesiaca</a>
                 </li>
             </ul>

@@ -2,7 +2,9 @@
 
 namespace App\Auth;
 
+use App\Core\DB\Connection;
 use App\Core\IAuthenticator;
+use App\Models\User;
 
 /**
  * Class DummyAuthenticator
@@ -23,21 +25,41 @@ class DummyAuthenticator implements IAuthenticator
         session_start();
     }
 
-    /**
-     * Verify, if the user is in DB and has his password is correct
-     * @param $login
-     * @param $password
-     * @return bool
-     * @throws \Exception
-     */
     public function login($login, $password): bool
     {
-        if ($login == self::LOGIN && password_verify($password, self::PASSWORD_HASH)) {
-            $_SESSION['user'] = self::USERNAME;
-            return true;
-        } else {
+        if (isset($login)) {
+            if ($login == self::LOGIN) {
+                if (password_verify($password, self::PASSWORD_HASH)) {
+                    $_SESSION['user'] = self::USERNAME;
+                    return true;
+                }
+            } else {
+                $users = User::getAll("login='" . $login . "'");
+                if (empty($users)) {
+                    return false;
+                }
+                $user = $users[0];
+                if (password_verify($password, $user->getPassword())) {
+                    $_SESSION['user'] = $user->getLogin();
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public function signup($login, $password): bool
+    {
+        $users = User::getAll("login='" . $login . "'");
+        if (!empty($users)) {
             return false;
         }
+
+        $user = new User();
+        $user->setLogin($login);
+        $user->setPassword(password_hash($password, PASSWORD_DEFAULT));
+        $user->save();
+        return true;
     }
 
     /**

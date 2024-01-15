@@ -1,5 +1,16 @@
+drop table users;
 drop table reviews;
 drop table posts;
+
+create table users
+(
+    id       int(11)      not null auto_increment,
+    login    varchar(50)  not null,
+    password varchar(255) not null,
+    primary key (id)
+) engine = InnoDB
+  default charset = utf8mb4
+  collate = utf8mb4_general_ci;
 
 create table posts
 (
@@ -10,6 +21,7 @@ create table posts
     info        text         null,
     ingredients text         null,
     recipe      text         not null,
+    recommended bool         null,
     picture     varchar(400) null,
     primary key (id)
 ) engine = InnoDB

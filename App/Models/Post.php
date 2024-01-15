@@ -10,13 +10,9 @@ use DateTime;
 class Post extends Model
 {
 
-    public static function getTopFive(): array
+    public static function getTopFivePosts(): array
     {
-        $posts = Post::getAll(whereClause: "DATEDIFF(NOW(), date) < 31");
-
-        if (empty($posts)) {
-            $posts = Post::getAll();
-        }
+        $posts = Post::getAll();
 
         $comparator = function($a, $b) {
             if ($a->getPostRating() < $b->getPostRating()) {
@@ -26,10 +22,25 @@ class Post extends Model
             }
             return 0;
         };
+
         usort($posts, $comparator);
+        return array_slice($posts, 0, 5);
+    }
 
+    public static function getRecommendedPosts(): array
+    {
+        $posts = Post::getAll(whereClause: "recommended = TRUE");
 
+        $comparator = function($a, $b) {
+            if ($a->getPostRating() < $b->getPostRating()) {
+                return 1;
+            } else if ($a->getPostRating() > $b->getPostRating()) {
+                return -1;
+            }
+            return 0;
+        };
 
+        usort($posts, $comparator);
         return array_slice($posts, 0, 5);
     }
 
@@ -40,7 +51,20 @@ class Post extends Model
     protected ?string $picture;
     protected ?string $info;
     protected ?string $ingredients;
+
     protected ?string $recipe;
+
+    protected ?bool $recommended;
+
+    public function getRecommended(): ?bool
+    {
+        return $this->recommended;
+    }
+
+    public function setRecommended(?bool $recommended): void
+    {
+        $this->recommended = $recommended;
+    }
 
     public function getDate(): ?string
     {
@@ -141,11 +165,6 @@ class Post extends Model
         catch (\Exception) {
             return  "";
         }
-    }
-
-    public function getContent(): ?Content
-    {
-        return Content::getOne($this->getId());
     }
 
     public function getPostRating(): ?float

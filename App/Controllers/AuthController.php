@@ -6,6 +6,7 @@ use App\Config\Configuration;
 use App\Core\AControllerBase;
 use App\Core\Responses\Response;
 use App\Core\Responses\ViewResponse;
+use App\Models\User;
 
 /**
  * Class AuthController
@@ -39,6 +40,30 @@ class AuthController extends AControllerBase
         }
 
         $data = ($logged === false ? ['message' => 'Zlý login alebo heslo!'] : []);
+        return $this->html($data);
+    }
+
+    /**
+     * Sign up a user
+     * @return Response
+     */
+    public function signup(): Response
+    {
+        $formData = $this->app->getRequest()->getPost();
+        $logged = null;
+        $registered = null;
+        if (isset($formData['submit'])) {
+            $registered = $this->app->getAuth()->signup($formData['login'], $formData['password']);
+
+            if ($registered) {
+                $logged = $this->app->getAuth()->login($formData['login'], $formData['password']);
+                if ($logged) {
+                    return $this->redirect($this->url("home.index"));
+                }
+            }
+        }
+
+        $data = ($registered === false ? ['message' => 'Tento login sa už používa!'] : []);
         return $this->html($data);
     }
 

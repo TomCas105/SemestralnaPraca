@@ -24,7 +24,7 @@ class FileStorage
         if (move_uploaded_file($fileData['tmp_name'], $filePath)) {
             return $filePrefix . "-" .$fileData['name'];
         } else {
-            throw new HTTPException(503, 'File upload failed. Did you create upload directory?');
+            throw new HTTPException(503, 'File '.$filePath.' upload failed. Did you create upload directory? ');
         }
     }
 

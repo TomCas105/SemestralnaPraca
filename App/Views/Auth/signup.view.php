@@ -10,12 +10,12 @@ $layout = 'auth';
         <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
             <div class="card card-signin m-5">
                 <div class="card-body text-center">
-                    <h5 class="text-20 text-bold">Vitajte späť!</h5>
-                    <small>Pre pokračovanie sa prihláste</small>
+                    <h5 class="text-20 text-bold">Vitajte!</h5>
+                    <small>Pre pokračovanie sa zaregistrujte</small>
                     <div class="text-center text-danger mb-3">
                         <?= @$data['message'] ?>
                     </div>
-                    <form class="form-signin" method="post" action="<?= $link->url("login") ?>">
+                    <form class="form-signin" method="post" action="<?= $link->url("signup") ?>">
                         <div class="form-label-group mb-3">
                             <input name="login" type="text" id="login" class="form-control" placeholder="Login"
                                    required autofocus>
@@ -26,13 +26,13 @@ $layout = 'auth';
                                    placeholder="Password" required>
                         </div>
                         <div>
-                            <button class="btn border text-bold text-16" type="submit" name="submit">Prihlásiť
+                            <button class="btn border text-bold text-16" type="submit" name="submit">Zaregistrovať
                             </button>
                         </div>
                     </form>
                     <div class="d-flex justify-content-center gap-2 mt-3">
-                        <p>Nový používateľ?</p>
-                        <a href="<?= $link->url("signup") ?>">Zaregistrovať</a>
+                        <p>Ste zaregistrovaný?</p>
+                        <a href="<?= $link->url("login") ?>">Prihlásiť</a>
                     </div>
                 </div>
             </div>

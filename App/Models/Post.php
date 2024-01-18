@@ -16,7 +16,7 @@ class Post extends Model
     {
         $posts = Post::getAll();
 
-        $comparator = function($a, $b) {
+        $comparator = function ($a, $b) {
             if ($a->getPostRating() < $b->getPostRating()) {
                 return 1;
             } else if ($a->getPostRating() > $b->getPostRating()) {
@@ -36,7 +36,7 @@ class Post extends Model
     {
         $posts = Post::getAll(whereClause: "recommended = TRUE");
 
-        $comparator = function($a, $b) {
+        $comparator = function ($a, $b) {
             if ($a->getPostRating() < $b->getPostRating()) {
                 return 1;
             } else if ($a->getPostRating() > $b->getPostRating()) {
@@ -154,21 +154,20 @@ class Post extends Model
     public function getFormattedAge(): ?string
     {
         try {
-        $currentTime = new DateTime();
-        $postAge = $currentTime->diff(new DateTime($this->getDate()));
-        if ($postAge->days < 1) {
-            return $postAge->format("%hh");
-        }
-        if ($postAge->days < 30) {
-            return (int)($postAge->days) . "d";
-        }
-        if ($postAge->days < 365) {
-            return (int)($postAge->days / 30) . "m";
-        }
-        return (int)($postAge->days / 365) . "r";
-        }
-        catch (Exception) {
-            return  "";
+            $currentTime = new DateTime();
+            $postAge = $currentTime->diff(new DateTime($this->getDate()));
+            if ($postAge->days < 1) {
+                return $postAge->format("%hh");
+            }
+            if ($postAge->days < 30) {
+                return (int)($postAge->days) . "d";
+            }
+            if ($postAge->days < 365) {
+                return (int)($postAge->days / 30) . "m";
+            }
+            return (int)($postAge->days / 365) . "r";
+        } catch (Exception) {
+            return "";
         }
     }
 
@@ -180,16 +179,19 @@ class Post extends Model
         $rating = 0.0;
         $reviews = Review::getAll(whereClause: "post_id = " . $this->getId());
 
-        if (empty($reviews))
-        {
+        if (empty($reviews)) {
             return 0;
         }
 
-        foreach ($reviews as $review)
-        {
+        foreach ($reviews as $review) {
             $rating += $review->getRating();
         }
 
         return $rating / sizeof($reviews);
+    }
+
+    public function getReviews(): array
+    {
+        return Review::getAll(whereClause: "post_id ='" . $this->id . "'");
     }
 }

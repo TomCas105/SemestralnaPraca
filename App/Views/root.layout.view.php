@@ -67,7 +67,7 @@
                         </li>
                         <li><a class="dropdown-item" href="<?= $link->url("post.add") ?>">Pridať recept</a></li>
                         <li><a class="dropdown-item" href="<?= $link->url("user.posts") ?>">Moje recepty</a></li>
-                        <li><a class="dropdown-item" href="#">Uložené recepty</a></li>
+                        <li><a class="dropdown-item" href="<?= $link->url("user.saved") ?>">Uložené recepty</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
@@ -91,6 +91,7 @@
         <?= $contentHTML ?>
     </div>
 </div>
+<script src="App/Resources/js/script.js"></script>
 
 </body>
 </html>

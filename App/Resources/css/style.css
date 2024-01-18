@@ -48,8 +48,12 @@ header {
     }
 }
 
-.shadow-small {
+.shadow-medium {
     box-shadow: 0 0.2rem 1.2rem var(--shadow-color);
+}
+
+.shadow-small {
+    box-shadow: 0 0.2rem 1.0rem var(--shadow-color);
 }
 
 .carousel, .carousel-inner {
@@ -57,7 +61,14 @@ header {
 }
 
 .btn {
-    background: linear-gradient(to top, #99ff77, #ffff77) no-repeat fixed;
+    background: #99ff77 no-repeat fixed;
+    transition: transform 0.1s ease-in-out;
+}
+
+.btn:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+    background: #bbff77 no-repeat fixed;
 }
 
 .dropdown-item:active {
@@ -104,7 +115,6 @@ header {
 }
 
 .recipe-card {
-    box-shadow: 0 0.5rem 1rem var(--shadow-color);
     transition: transform var(--recipe-card-transition-time) ease-in-out;
     z-index: 0;
     color: inherit;
@@ -154,20 +164,30 @@ header {
 }
 
 .rating-star {
-    height: 25px;
-    width: 25px;
+    height: 40px;
+    width: 40px;
     display: block;
     background: url("../images/icons/user_rating_bg.png") repeat-x;
-    background-size: 25px 25px;
+    background-size: 40px 40px;
+    transition: transform 0.1s ease-in-out;
+}
+
+.rating-star:hover {
+    cursor: pointer;
+    transform: scale(1.2);
 }
 
 .rating-star-checked {
     background: url("../images/icons/user_rating.png") repeat-x;
-    background-size: 25px 25px;
+    background-size: 40px 40px;
 }
 
 .text-bold {
     font-weight: bold;
+}
+
+.text-vertical-center {
+    vertical-align: middle;
 }
 
 .text-20 {

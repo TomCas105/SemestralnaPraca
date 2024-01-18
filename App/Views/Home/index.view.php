@@ -8,7 +8,7 @@
 <div class="row">
     <div class="col"></div>
     <div id="mainPageContainer" class="col-lg-7 border">
-        <div id="mainPageCarousel" class="carousel shadow-small slide mb-3" data-bs-ride="carousel">
+        <div id="mainPageCarousel" class="carousel shadow-medium slide mb-3" data-bs-ride="carousel">
             <div class="carousel-inner">
 
                 <?php $first = true;
@@ -71,7 +71,6 @@
                         </div>
                     </a>
                 <?php endforeach; ?>
-
             </div>
         </div>
     </div>

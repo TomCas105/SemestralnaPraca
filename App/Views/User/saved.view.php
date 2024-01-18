@@ -12,7 +12,7 @@
             <div class="container">
                 <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 g-3">
                     <?php if (empty($data['posts'])) : ?>
-                        <h5>Zatiaľ ste nezverejnili žiaden recept.</h5>
+                        <h5>Zatiaľ nemáte uložené žiadne recepty.</h5>
                     <?php else: ?>
                         <?php require 'App/Views/post_list.view.php' ?>
                     <?php endif; ?>

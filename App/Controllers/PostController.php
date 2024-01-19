@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Core\AControllerBase;
 use App\Core\HTTPException;
+use App\Core\Responses\JsonResponse;
 use App\Core\Responses\RedirectResponse;
 use App\Core\Responses\Response;
 use App\Helpers\FileStorage;
@@ -51,7 +52,7 @@ class PostController extends AControllerBase
                     return $this->app->getAuth()->isLogged();
                 }
             default:
-                return $this->app->getAuth()->isLogged();
+                return true;
         }
     }
 
@@ -101,7 +102,7 @@ class PostController extends AControllerBase
             $post = new Post();
             $post->setAuthor($this->app->getAuth()->getLoggedUserName());
             date_default_timezone_set("Europe/Prague");
-            $post->setDate(date("Y-m-d h:i:s"));
+            $post->setDate(date("Y-m-d H:i:s"));
         }
         $post->setTitle($this->request()->getValue('title'));
         $post->setPicture($oldFileName);
@@ -168,55 +169,6 @@ class PostController extends AControllerBase
     }
 
     /**
-     * @throws HTTPException
-     * @throws Exception
-     */
-    public function review(): Response
-    {
-        $id = (int)$this->request()->getValue('id');
-        $formErrors = $this->reviewErrors();
-        $post = Post::getOne($id);
-        $review_text = $this->request()->getValue('review_text');
-        $user = $this->app->getAuth()->getLoggedUserName();
-
-        if (!isset($post)) {
-            throw new HTTPException(404);
-        }
-
-        if (count($formErrors) > 0) {
-
-            return $this->html(
-                [
-                    'post' => $post,
-                    'review_text' => $review_text,
-                    'errors' => $formErrors
-                ], 'index'
-            );
-        }
-
-        $review = null;
-        $review_rating = (int)$this->request()->getValue('review_rating');
-
-        $reviews = Review::getAll(whereClause: "review_author='" . $user . "' and post_id='" . $id . "'");
-        if (empty($reviews)) {
-            $review = new Review();
-            $review->setPostId($id);
-            $review->setReviewAuthor($user);
-        } else {
-            $review = $reviews[0];
-        }
-        $review->setRating($review_rating);
-        $review->setReviewText($review_text);
-        $review->save();
-
-        return $this->html(
-            [
-                'post' => $post
-            ], 'index'
-        );
-    }
-
-    /**
      * @throws Exception
      */
     private function formErrors(): array
@@ -245,18 +197,6 @@ class PostController extends AControllerBase
         }
         if ($info != "" && strlen($info) > 500) {
             $errors[] = "Krátky popis jedla nesmie obsahovať viac ako 500 znakov! (" . strlen($info) . " znakov)";
-        }
-        return $errors;
-    }
-
-    private function reviewErrors(): array
-    {
-        $errors = [];
-        if ((int)$this->request()->getValue('review_rating') < 1) {
-            $errors[] = "Musíte zvoliť hodnotenie!";
-        }
-        if ($this->request()->getValue('review_text') != "" && strlen($this->request()->getValue('review_text')) > 500) {
-            $errors[] = "Text recenzie nesmie obsahovať viac ako 500 znakov! (" . strlen($this->request()->getValue('review_text')) . " znakov)";
         }
         return $errors;
     }

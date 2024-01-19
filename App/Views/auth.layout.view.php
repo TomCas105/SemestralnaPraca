@@ -16,7 +16,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
     <link rel="stylesheet" href="App/Resources/css/style.css">
-    <script src="public/js/script.js"></script>
 </head>
 <body>
 <div class="container-fluid mt-3">

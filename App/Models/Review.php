@@ -11,6 +11,7 @@ class Review extends Model
     protected ?int $id = null;
     protected ?int $post_id;
     protected ?string $review_author;
+    protected ?string $review_text;
     protected ?int $rating;
     protected ?string $date;
 
@@ -24,7 +25,6 @@ class Review extends Model
         $this->date = $date;
     }
 
-    protected ?string $review_text;
 
     public function getReviewText(): ?string
     {
@@ -33,10 +33,10 @@ class Review extends Model
 
     public function getReviewTextShort(): ?string
     {
-        if ($this->review_text < 47) {
+        if (strlen($this->review_text) < 177) {
             return $this->review_text;
         }
-        return $this->review_text.substr(0,  0, 47) . "...";
+        return substr($this->review_text, 0, 177) . "...";
     }
 
     public function setReviewText(?string $review_text): void

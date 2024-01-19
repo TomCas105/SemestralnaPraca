@@ -5,6 +5,8 @@
 /** @var \App\Core\LinkGenerator $link */
 ?>
 
+<script src="Public/js/script_homeIndex.js" type="module"></script>
+
 <div class="row">
     <div class="col"></div>
     <div id="mainPageContainer" class="col-lg-7 border">
@@ -50,27 +52,8 @@
         </div>
 
         <div class="d-flex flex-column flex-md-row p-3 gap-3 py-md-3 align-items-center justify-content-center ">
-            <div class="list-group shadow-small justify-content-between">
+            <div id="reviewList" class="list-group shadow-small justify-content-between">
 
-                <?php foreach ($data['posts'] as $post): ?>
-                    <a href="<?= $link->url('post.index', ['id' => $post->getId()]) ?>" class="list-group-item list-group-item-action d-flex gap-3 py-3">
-                        <img src="App/Resources/images/icons/user_icon_01.png" alt="..."
-                             class="rounded-circle user-icon">
-                        <div class="d-flex gap-2 w-100 justify-content-between">
-                            <div>
-                                <h6 class="mb-0"><?= $post->getAuthor() ?></h6>
-                                <p class="mb-1 opacity-75"><?= $post->getTitle() ?></p>
-                                <div class="rating-bar">
-                                        <span class="rating-bar-star-bg">
-                                            <span class="rating-bar-star"
-                                                  style="width: <?= $post->getPostRating() * 20 ?>%"></span>
-                                        </span>
-                                </div>
-                            </div>
-                            <small class="opacity-50 text-nowrap"><?= $post->getFormattedAge() ?></small>
-                        </div>
-                    </a>
-                <?php endforeach; ?>
             </div>
         </div>
     </div>

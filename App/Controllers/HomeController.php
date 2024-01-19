@@ -29,7 +29,7 @@ class HomeController extends AControllerBase
      */
     public function index(): Response
     {
-        return $this->html(['topFive' => Post::getTopFivePosts(), 'posts' => Post::getAll(orderBy: "date desc", limit: 5)]);
+        return $this->html(['topFive' => Post::getTopFivePosts()]);
     }
 
     /**

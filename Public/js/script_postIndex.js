@@ -1,21 +1,37 @@
 class PostAjax {
     constructor() {
-        document.getElementById("save_recipe").onclick = () => this.toggleSaveRecipe();
-        document.getElementById("update_review").onclick = () => this.updateReview();
-        for (let i = 1; i <= 5; i++) {
-            document.getElementById("rating" + i).onclick = () => this.setRating(i);
+
+        let saveRecipeButton = document.getElementById("save_recipe");
+        if (saveRecipeButton != null) {
+            saveRecipeButton.onclick = () => this.saveRecipe()
         }
 
-        this.getPostReviews();
+        let updateReviewButton = document.getElementById("update_review");
+        if (updateReviewButton != null) {
+            updateReviewButton.onclick = () => this.updateReview()
+        }
 
-        setInterval(() => this.getPostReviews(), 5000);
+        for (let i = 1; i <= 5; i++) {
+            let rating = document.getElementById("rating" + i);
+            if (rating != null) {
+                rating.onclick = () => this.setRating(i)
+            }
+        }
+
+        this.refresh();
+
+        setInterval(() => this.refresh(), 5000);
+    }
+
+    async refresh() {
+        await this.getPostReviews();
+        await this.getSavedRecipe()
     }
 
     async getPostReviews() {
         let response = await fetch("?c=review&a=getPostReviews&id=" + post_id);
         let data = await response.json();
-
-        if (response.ok) {
+        if (Object.keys(data).length > 0) {
             document.getElementById("review_container").style = "display: block";
             let reviewList = document.getElementById("reviewList");
             let html = "";
@@ -60,8 +76,7 @@ class PostAjax {
                 review_text: document.getElementById("review_text").value
             })
         });
-        let data = await response.json();
-        if (response.status === 200) {
+        if (response.ok) {
             document.getElementById("review_text").value = "";
             await this.setRating(0);
         }
@@ -72,8 +87,27 @@ class PostAjax {
 
     }
 
-    async toggleSaveRecipe() {
-        //TODO už nevládzem :(
+    async saveRecipe() {
+        let response = await fetch("?c=post&a=saveRecipe&id=" + post_id);
+        let data = await response.json();
+        if (data.ok === 1) {
+            document.getElementById("save_recipe").innerText = "Odobrať z uložených";
+        } else {
+            document.getElementById("save_recipe").innerText = "Uložiť recept";
+        }
+    }
+
+    async getSavedRecipe() {
+        if (user == null || user === "") {
+            return;
+        }
+        let response = await fetch("?c=post&a=isSavedRecipe&id=" + post_id);
+        let data = await response.json();
+        if (data.ok === 1) {
+            document.getElementById("save_recipe").innerText = "Odobrať z uložených";
+        } else {
+            document.getElementById("save_recipe").innerText = "Uložiť recept";
+        }
     }
 
     async setRating(rating) {

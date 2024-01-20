@@ -9,7 +9,7 @@
 
 <script>
     var post_id = "<?php print($data['post']->getId()) ?>";
-    var user = "<?php print($auth->getLoggedUserName()) ?>";
+    var user = "<?php print($auth->isLogged() ? $auth->getLoggedUserName() : "") ?>";
 </script>
 <script src="Public/js/script_postIndex.js"></script>
 
@@ -68,11 +68,11 @@
                 <div>
                     <p class="text-bold text-20 text-center mt-3 mb-1">Hodnotenie</p>
                     <div class="d-flex mb-3 justify-content-center" onload="refreshRating(0)">
-                        <a id="rating1" onclick="setRating(1)" class="rating-star"></a>
-                        <a id="rating2" onclick="setRating(2)" class="rating-star"></a>
-                        <a id="rating3" onclick="setRating(3)" class="rating-star"></a>
-                        <a id="rating4" onclick="setRating(4)" class="rating-star"></a>
-                        <a id="rating5" onclick="setRating(5)" class="rating-star"></a>
+                        <a id="rating1" class="rating-star"></a>
+                        <a id="rating2" class="rating-star"></a>
+                        <a id="rating3" class="rating-star"></a>
+                        <a id="rating4" class="rating-star"></a>
+                        <a id="rating5" class="rating-star"></a>
                     </div>
                 </div>
                 <div class="input-group mb-3 ">
@@ -86,12 +86,12 @@
         <?php endif; ?>
 
         <div id="review_container" style="display: none">
-        <p class="text-bold text-20 text-center mt-3">Recenzie:</p>
-        <div class="d-flex flex-column flex-md-row p-3 gap-3 py-md-3 align-items-center justify-content-center ">
-            <div id="reviewList" class="list-group shadow-small justify-content-between">
+            <p class="text-bold text-20 text-center mt-3">Recenzie:</p>
+            <div class="d-flex flex-column flex-md-row p-3 gap-3 py-md-3 align-items-center justify-content-center ">
+                <div id="reviewList" class="list-group shadow-small justify-content-between">
 
+                </div>
             </div>
-        </div>
         </div>
     </div>
     <div class="col"></div>

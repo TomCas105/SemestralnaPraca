@@ -169,6 +169,55 @@ class PostController extends AControllerBase
     }
 
     /**
+     * @throws HTTPException
+     * @throws Exception
+     */
+    public function saveRecipe(): Response {
+
+        $id = (int)$this->request()->getValue('id');
+        $post = Post::getOne($id);
+
+        if (!isset($post)) {
+            throw new HTTPException(404);
+        }
+
+        $user = $this->app->getAuth()->getLoggedUserName();
+
+        $savedPosts = SavedPost::getAll(whereClause: "save_author='" . $user . "' and post_id='" . $id . "'");
+        if (empty($savedPosts)) {
+            $savedPost = new SavedPost();
+            $savedPost->setPostId($id);
+            $savedPost->setSaveAuthor($user);
+            $savedPost->save();
+            return $this->json(array("ok" => 1));
+        } else {
+            foreach ($savedPosts as $savedPost) {
+                $savedPost->delete();
+            }
+            return $this->json(array("ok" => 0));
+        }
+    }
+
+    public function isSavedRecipe(): Response {
+
+        $id = (int)$this->request()->getValue('id');
+        $post = Post::getOne($id);
+
+        if (!isset($post)) {
+            throw new HTTPException(404);
+        }
+
+        $user = $this->app->getAuth()->getLoggedUserName();
+
+        $savedPosts = SavedPost::getAll(whereClause: "save_author='" . $user . "' and post_id='" . $id . "'");
+        if (empty($savedPosts)) {
+            return $this->json(array("ok" => 0));
+        } else {
+            return $this->json(array("ok" => 1));
+        }
+    }
+
+    /**
      * @throws Exception
      */
     private function formErrors(): array

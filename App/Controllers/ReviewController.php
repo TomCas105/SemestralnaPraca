@@ -28,7 +28,7 @@ class ReviewController extends AControllerBase
         $reviews2 = array();
 
         if (empty($reviews)) {
-            throw new HTTPException(404, "Not Found");
+            return $this->json("");
         }
 
         foreach ($reviews as $review) {
@@ -71,7 +71,8 @@ class ReviewController extends AControllerBase
      * @throws HTTPException
      * @throws Exception
      */
-    public function updateReview(): Response {
+    public function updateReview(): Response
+    {
         $data = json_decode(file_get_contents('php://input'));
 
         $id = (int)$data->id;
@@ -101,6 +102,6 @@ class ReviewController extends AControllerBase
         $review->setReviewText($review_text);
         $review->save();
 
-        return $this->json(array('updated' => true));
+        return $this->json(array('ok' => true));
     }
 }

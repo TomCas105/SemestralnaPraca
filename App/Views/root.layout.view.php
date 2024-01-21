@@ -43,10 +43,6 @@
                 </li>
             </ul>
 
-            <form class="col-12 col-lg-auto mb-2 mb-lg-0 me-lg-2" role="search">
-                <input type="search" class="form-control" placeholder="Vyhľadať..." aria-label="Search">
-            </form>
-
             <?php if ($auth->isLogged()): ?>
                 <div class="dropdown text-end">
                     <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle"

@@ -8,8 +8,8 @@
 ?>
 
 <script>
-    var post_id = "<?php print($data['post']->getId()) ?>";
-    var user = "<?php print($auth->isLogged() ? $auth->getLoggedUserName() : "") ?>";
+    let post_id = "<?php print($data['post']->getId()) ?>";
+    let user = "<?php print($auth->isLogged() ? $auth->getLoggedUserName() : "") ?>";
 </script>
 <script src="Public/js/script_postIndex.js"></script>
 
@@ -61,8 +61,7 @@
         <?php if ($auth->isLogged() && $auth->getLoggedUserName() != $data['post']->getAuthor()): ?>
             <!--Hodnotenie-->
             <div class="justify-content-between">
-                <div id="alert_container" class="alert alert-danger" style="display: none" role="alert">
-
+                <div id="alert_container" style="display: none" >
                 </div>
                 <div>
                     <p class="text-bold text-20 text-center mt-3 mb-1">Hodnotenie</p>
@@ -81,6 +80,7 @@
                               id="review_text"><?= @$data['review_text'] ?></textarea>
                 </div>
                 <button id="update_review" class="btn border text-bold text-16">Hodnotiť</button>
+                <button id="delete_review" class="btn border text-bold text-16">Odstrániť</button>
             </div>
         <?php endif; ?>
 

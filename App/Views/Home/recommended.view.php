@@ -15,7 +15,7 @@
                     <h5>Momentálne nie sú odporúčané žiadne recepty.</h5>
                 <?php else: ?>
                     <?php foreach ($data['posts'] as $post): ?>
-                        <div class="row px-4">
+                        <div class="row p-2">
                             <a href="<?= $link->url('post.index', ['id' => $post->getId()]) ?>"
                                class="card recipe-card">
                                 <div class="card-body">

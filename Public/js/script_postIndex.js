@@ -16,9 +16,15 @@ class PostAjax {
             updateReviewButton.onclick = () => this.updateReview()
         }
 
+        let deleteReviewButton = document.getElementById("delete_review");
+        if (deleteReviewButton != null) {
+            deleteReviewButton.onclick = () => this.deleteReview()
+        }
+
         let reviewTextArea = document.getElementById("review_text");
         if (reviewTextArea != null) {
             reviewTextArea.onchange = () => this.getReviewErrors()
+            this.getUserPostReview();
         }
 
         for (let i = 1; i <= 5; i++) {
@@ -48,7 +54,7 @@ class PostAjax {
             let html = "";
             data.forEach((review) => {
                 html += `
-                <div class="list-group-item list-group-item-action d-flex gap-3 py-3">
+                    <div class="list-group-item d-flex gap-3 py-3">
                         <img src="App/Resources/images/icons/user_icon_01.png" alt="..."
                              class="rounded-circle user-icon">
                         <div class="d-flex gap-2 w-100 justify-content-between">
@@ -66,12 +72,28 @@ class PostAjax {
                 html += `</div>
                             <small class="opacity-50 text-nowrap">${review.age}</small>
                         </div>
-                </div>
-            `
+                    </div>
+                    `
             });
             reviewList.innerHTML = html;
         } else {
             document.getElementById("review_container").style = "display: none";
+        }
+    }
+
+    async getUserPostReview() {
+        let response = await fetch("?c=review&a=getUserPostReview&id=" + post_id);
+        let data = await response.json();
+
+        let reviewTextArea = document.getElementById("review_text");
+        let reviewRatingBar = document.getElementById("review_rating");
+
+        if (Object.keys(data).length > 0) {
+            document.getElementById("review_text").value = data.review_text;
+            await this.setRating(data.review_rating);
+        } else {
+            document.getElementById("review_text").value = "";
+            await this.setRating(0);
         }
     }
 
@@ -90,10 +112,21 @@ class PostAjax {
                 review_text: document.getElementById("review_text").value
             })
         });
-        if (response.ok) {
-            document.getElementById("review_text").value = "";
-            await this.setRating(0);
-        }
+        await this.getPostReviews()
+    }
+
+    async deleteReview() {
+        let response = await fetch("?c=review&a=deleteReview", {
+            method: 'POST',
+            headers: {
+                'Content-Type': "application/json",
+            },
+            body: JSON.stringify({
+                id: post_id
+            })
+        });
+        document.getElementById("review_text").value = "";
+        await this.setRating(0);
         await this.getPostReviews()
     }
 
@@ -161,17 +194,21 @@ class PostAjax {
 
     async getReviewErrors() {
         let errors = "";
+        let reviewRating = document.getElementById("review_rating");
+        if (reviewRating != null && reviewRating.value < 1) {
+            errors += `<div class="alert alert-danger" role="alert">Musíte zvoliť hodnotenie.</div>`;
+        }
         let reviewText = document.getElementById("review_text");
         if (reviewText != null && reviewText.value.length > 500) {
-            errors += `Obsah hodnotenia nesmie byť viac ako 500 znakov. (${reviewText.value.length} znakov)`
+            errors += `<div class="alert alert-danger" role="alert">Obsah hodnotenia nesmie byť viac ako 500 znakov. (${reviewText.value.length} znakov)</div>`;
         }
         let alertContainer = document.getElementById("alert_container");
         if (alertContainer != null) {
-            alertContainer.innerText = errors;
+            alertContainer.innerHTML = errors;
             if (errors.length > 0) {
-                alertContainer.style = "display: block"
+                alertContainer.style = "display: block";
             } else {
-                alertContainer.style = "display: none"
+                alertContainer.style = "display: none";
             }
         }
         return errors.length > 0;

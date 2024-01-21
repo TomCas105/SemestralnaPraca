@@ -43,6 +43,22 @@ class ReviewController extends AControllerBase
         return $this->json($reviews2);
     }
 
+    public function getUserPostReview(): Response
+    {
+        $post_id = $this->request()->getValue("id");
+
+        $reviews = Review::getAll("post_id = '" . $post_id . "' and review_author = '" . $this->app->getAuth()->getLoggedUserName() . "'");
+
+        if (empty($reviews)) {
+            return $this->json("");
+        }
+
+        return $this->json(array(
+            'review_text' => $reviews[0]->getReviewText(),
+            'review_rating' => $reviews[0]->getRating()
+        ));
+    }
+
     /**
      * @throws Exception
      */
@@ -101,6 +117,20 @@ class ReviewController extends AControllerBase
         $review->setRating($review_rating);
         $review->setReviewText($review_text);
         $review->save();
+
+        return $this->json(array('ok' => true));
+    }
+
+    public function deleteReview(): Response
+    {
+        $data = json_decode(file_get_contents('php://input'));
+
+        $id = (int)$data->id;
+
+        $reviews = Review::getAll(whereClause: "post_id='" . $id . "' and review_author='" . $this->app->getAuth()->getLoggedUserName() . "'");
+        foreach ($reviews as $review) {
+            $review->delete();
+        }
 
         return $this->json(array('ok' => true));
     }

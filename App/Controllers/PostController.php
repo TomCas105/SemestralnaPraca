@@ -130,11 +130,9 @@ class PostController extends AControllerBase
             $newFile = $this->request()->getFiles()['picture'];
             $newFileName = $this->request()->getFiles()['picture']['name'];
             if ($newFileName != "") {
-                if (FileStorage::UPLOAD_DIR . "/" . $newFileName != $oldFileName) {
-                    FileStorage::deleteFile($oldFileName);
-                    $saveFileName = FileStorage::saveFile($newFile);
-                    $post->setPicture(FileStorage::UPLOAD_DIR . "/" . $saveFileName);
-                }
+                FileStorage::deleteFile($oldFileName);
+                $saveFileName = FileStorage::saveFile($newFile);
+                $post->setPicture(FileStorage::UPLOAD_DIR . "/" . $saveFileName);
             }
             $post->save();
             return new RedirectResponse($this->url("user.posts"));

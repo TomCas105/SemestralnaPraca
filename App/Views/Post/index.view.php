@@ -22,6 +22,9 @@
             <div>
                 <?php if ($auth->isLogged()): ?>
                     <div class="d-flex gap-2">
+                        <?php if ($auth->getLoggedUserName() == "Admin"): ?>
+                            <a id="recommend_recipe" class="btn border text-16 text-bold">Odporúčiť recept</a>
+                        <?php endif; ?>
                         <a id="save_recipe" class="btn border text-16 text-bold">Uložiť recept</a>
                         <?php if ($auth->getLoggedUserName() == $data['post']->getAuthor()): ?>
                             <!--Úprava príspevku-->
@@ -58,13 +61,9 @@
         <?php if ($auth->isLogged() && $auth->getLoggedUserName() != $data['post']->getAuthor()): ?>
             <!--Hodnotenie-->
             <div class="justify-content-between">
-                <?php if (!is_null(@$data['errors'])): ?>
-                    <?php foreach ($data['errors'] as $error): ?>
-                        <div class="alert alert-danger" role="alert">
-                            <?= $error ?>
-                        </div>
-                    <?php endforeach; ?>
-                <?php endif; ?>
+                <div id="alert_container" class="alert alert-danger" style="display: none" role="alert">
+
+                </div>
                 <div>
                     <p class="text-bold text-20 text-center mt-3 mb-1">Hodnotenie</p>
                     <div class="d-flex mb-3 justify-content-center" onload="refreshRating(0)">
@@ -78,7 +77,7 @@
                 <div class="input-group mb-3 ">
                     <input type="hidden" name="review_rating" id="review_rating" value="0">
                     <textarea class="form-control no-resize" aria-label="With textarea" name="review_text"
-                              style="height: 100px"
+                              style="height: 150px"
                               id="review_text"><?= @$data['review_text'] ?></textarea>
                 </div>
                 <button id="update_review" class="btn border text-bold text-16">Hodnotiť</button>

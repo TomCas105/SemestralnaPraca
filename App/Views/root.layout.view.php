@@ -39,8 +39,7 @@
                     <a href="<?= $link->url("home.posts") ?>" class="nav-link px-3 link-body-emphasis">Recepty</a>
                 </li>
                 <li>
-                    <a href="<?= $link->url("home.months_choice") ?>" class="nav-link px-3 link-body-emphasis">Výber
-                        mesiaca</a>
+                    <a href="<?= $link->url("home.recommended") ?>" class="nav-link px-3 link-body-emphasis">Odporúčané</a>
                 </li>
             </ul>
 

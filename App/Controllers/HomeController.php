@@ -45,7 +45,7 @@ class HomeController extends AControllerBase
      * Example of an action accessible without authorization
      * @return \App\Core\Responses\ViewResponse
      */
-    public function months_choice(): Response
+    public function recommended(): Response
     {
         return $this->html(['posts' => Post::getRecommendedPosts()]);
     }

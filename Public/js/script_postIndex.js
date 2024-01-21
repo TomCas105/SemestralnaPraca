@@ -6,9 +6,19 @@ class PostAjax {
             saveRecipeButton.onclick = () => this.saveRecipe()
         }
 
+        let recommendRecipeButton = document.getElementById("recommend_recipe");
+        if (recommendRecipeButton != null) {
+            recommendRecipeButton.onclick = () => this.recommendRecipe()
+        }
+
         let updateReviewButton = document.getElementById("update_review");
         if (updateReviewButton != null) {
             updateReviewButton.onclick = () => this.updateReview()
+        }
+
+        let reviewTextArea = document.getElementById("review_text");
+        if (reviewTextArea != null) {
+            reviewTextArea.onchange = () => this.getReviewErrors()
         }
 
         for (let i = 1; i <= 5; i++) {
@@ -25,7 +35,8 @@ class PostAjax {
 
     async refresh() {
         await this.getPostReviews();
-        await this.getSavedRecipe()
+        await this.getSavedRecipe();
+        await this.getRecommendedRecipe();
     }
 
     async getPostReviews() {
@@ -65,6 +76,9 @@ class PostAjax {
     }
 
     async updateReview() {
+        if (await this.getReviewErrors()) {
+            return;
+        }
         let response = await fetch("?c=review&a=updateReview", {
             method: 'POST',
             headers: {
@@ -83,8 +97,27 @@ class PostAjax {
         await this.getPostReviews()
     }
 
-    async toggleRecommend() {
+    async recommendRecipe() {
+        let response = await fetch("?c=post&a=recommendRecipe&id=" + post_id);
+        let data = await response.json();
+        if (data.ok === 1) {
+            document.getElementById("recommend_recipe").innerText = "Odobrať z odporúčaných";
+        } else {
+            document.getElementById("recommend_recipe").innerText = "Odporúčiť recept";
+        }
+    }
 
+    async getRecommendedRecipe() {
+        if (user == null || user !== "Admin") {
+            return;
+        }
+        let response = await fetch("?c=post&a=isRecommendedRecipe&id=" + post_id);
+        let data = await response.json();
+        if (data.ok === 1) {
+            document.getElementById("recommend_recipe").innerText = "Odobrať z odporúčaných";
+        } else {
+            document.getElementById("recommend_recipe").innerText = "Odporúčiť recept";
+        }
     }
 
     async saveRecipe() {
@@ -124,6 +157,24 @@ class PostAjax {
         for (let i = rating; i < 5; i++) {
             stars[i].className = "rating-star";
         }
+    }
+
+    async getReviewErrors() {
+        let errors = "";
+        let reviewText = document.getElementById("review_text");
+        if (reviewText != null && reviewText.value.length > 500) {
+            errors += `Obsah hodnotenia nesmie byť viac ako 500 znakov. (${reviewText.value.length} znakov)`
+        }
+        let alertContainer = document.getElementById("alert_container");
+        if (alertContainer != null) {
+            alertContainer.innerText = errors;
+            if (errors.length > 0) {
+                alertContainer.style = "display: block"
+            } else {
+                alertContainer.style = "display: none"
+            }
+        }
+        return errors.length > 0;
     }
 }
 

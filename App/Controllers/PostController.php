@@ -218,6 +218,36 @@ class PostController extends AControllerBase
     }
 
     /**
+     * @throws HTTPException
+     * @throws Exception
+     */
+    public function recommendRecipe(): Response {
+
+        $id = (int)$this->request()->getValue('id');
+        $post = Post::getOne($id);
+
+        if (!isset($post)) {
+            throw new HTTPException(404);
+        }
+
+        $post->setRecommended(!$post->getRecommended());
+        $post->save();
+        return $this->json(array("ok" => $post->getRecommended() ? 1 : 0));
+    }
+
+    public function isRecommendedRecipe(): Response {
+
+        $id = (int)$this->request()->getValue('id');
+        $post = Post::getOne($id);
+
+        if (!isset($post)) {
+            throw new HTTPException(404);
+        }
+
+        return $this->json(array("ok" => $post->getRecommended() ? 1 : 0));
+    }
+
+    /**
      * @throws Exception
      */
     private function formErrors(): array

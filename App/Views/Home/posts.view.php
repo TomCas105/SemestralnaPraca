@@ -10,13 +10,14 @@
     <div id="mainPageContainer" class="col-lg-8 border">
         <div class="album py-3">
             <div class="container">
-                <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 g-3">
-                    <?php if (empty($data['posts'])) : ?>
-                        <h5>Nenašli sa žiadne recepty.</h5>
-                    <?php else: ?>
+                <h1 class="text-bold text-vertical-center text-32 text-center mb-4">Recepty</h1>
+                <?php if (empty($data['posts'])) : ?>
+                    <h5>Nenašli sa žiadne recepty.</h5>
+                <?php else: ?>
+                    <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 g-3">
                         <?php require 'App/Views/post_list.view.php' ?>
-                    <?php endif; ?>
-                </div>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
     </div>
